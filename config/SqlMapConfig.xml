@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 将易于修改的内容，提取到properties中，方便管理 -->
+	 <properties resource="db.properties"></properties>
+
+	 <!-- 系统设置
+	 		mapUnderscoreToCamelCase   数据库下划线和Java驼峰 对应，user_name -> userName
+	 -->
+	 <settings>
+	 	<setting name="mapUnderscoreToCamelCase" value="true"/>
+	 </settings>
+
+
+	<!-- 插件（放在environments标签上方即可） -->
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageHelper">
+			<property name="dialect" value="mysql"/>
+			<property name="rowBoundsWithCount" value="true"/>
+		</plugin>
+	</plugins>
+
+	<!-- 核心配置文件中声明别名 -->
+
+	<!-- 配置环境，连接需要的基本参数 -->
+	<environments default="development">
+		<environment id="development">
+			<!-- 使用jdbc管理事务 -->
+			<transactionManager type="JDBC"></transactionManager>
+			<!-- 配置数据源(配置连接池) -->
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}"/>
+				<property name="url" value="${jdbc.url}"/>
+				<property name="username" value="${jdbc.username}"/>
+				<property name="password" value="${jdbc.password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 确定dao位置，及确定接口所在的包 -->
+	<mappers>
+		<package name="org.tean8.blog.dao"/>
+	</mappers>
+
+</configuration>
